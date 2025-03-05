@@ -1,66 +1,78 @@
-import 'package:flutter/material.dart';
-import 'package:pilem2/screens/home_screen.dart';
-import 'package:pilem2/screens/search_screen.dart';
-import 'package:pilem2/screens/favorite_screen.dart';
+import 'dart:convert';
 
-void main() => runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:karyawan/models/karyawan.dart';
+
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Pilem',
+      title: "Daftar Karyawan",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-  @override
-  MainScreenState createState() => MainScreenState();
-}
-
-class MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const SearchScreen(),
-    const FavoriteScreen(),
-  ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+  Future<List<Karyawan>> _readJsonData() async {
+    String response = await rootBundle.loadString("assets/karyawan.json");
+    final List<dynamic> data = json.decode(response);
+    return data.map((json) => Karyawan.fromJson(json)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorite',
-          ),
-        ],
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Daftar Karyawan"),
+      ),
+      body: FutureBuilder<List<Karyawan>>(
+        future: _readJsonData(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    snapshot.data![index].nama,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Umur : ${snapshot.data![index].umur} tahun"),
+                      Text("Alamat : ${snapshot.data![index].alamat.jalan}, "
+                          "${snapshot.data![index].alamat.kota},"
+                          "${snapshot.data![index].alamat.provinsi},"),
+                      //Tampilkan Hobby
+                    ],
+                  ),
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('${snapshot.error}'),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
