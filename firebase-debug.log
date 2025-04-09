@@ -1,0 +1,22 @@
+[debug] [2025-04-09T10:42:34.769Z] ----------------------------------------------------------------------
+[debug] [2025-04-09T10:42:34.771Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\User\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js projects:create
+[debug] [2025-04-09T10:42:34.772Z] CLI Version:   14.1.0
+[debug] [2025-04-09T10:42:34.772Z] Platform:      win32
+[debug] [2025-04-09T10:42:34.772Z] Node Version:  v22.11.0
+[debug] [2025-04-09T10:42:34.772Z] Time:          Wed Apr 09 2025 17:42:34 GMT+0700 (Western Indonesia Time)
+[debug] [2025-04-09T10:42:34.772Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-04-09T10:42:34.779Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-04-09T10:42:34.779Z] > authorizing via signed-in user (valensflorencia_2226240038@mhs.mdp.ac.id)
+[debug] [2025-04-09T10:43:01.051Z] Checked if tokens are valid: true, expires at: 1744198890226
+[debug] [2025-04-09T10:43:01.052Z] Checked if tokens are valid: true, expires at: 1744198890226
+[debug] [2025-04-09T10:43:01.053Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2025-04-09T10:43:01.053Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"fasum-apps","name":"fasum-apps"}
+[debug] [2025-04-09T10:43:02.259Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 409
+[debug] [2025-04-09T10:43:02.259Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":409,"message":"Requested entity already exists","status":"ALREADY_EXISTS"}}
+[debug] [2025-04-09T10:43:02.693Z] FirebaseError: Request to https://cloudresourcemanager.googleapis.com/v1/projects had HTTP Error: 409, Requested entity already exists
+    at responseToError (C:\Users\User\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:52:12)
+    at RetryOperation._fn (C:\Users\User\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[error] 
+[error] Error: Failed to create project because there is already a project with ID fasum-apps. Please try again with a unique project ID.
